@@ -30,6 +30,7 @@ import java.io.IOException;
 public class Driver extends JFrame {
 	private double totalCost;
 	private Menu menu;
+	private Payment payment;
 	private JPanel receipt;
 	private JPanel centerPanel;
 	private JTextField orderPrice;
@@ -37,10 +38,12 @@ public class Driver extends JFrame {
 	private JTextPane orderItems;
 	private String itemInformation;
 	
-	public Driver(File givenMenu) throws FileNotFoundException {
+	public Driver(File storedCreditCards, File givenMenu) throws FileNotFoundException {
 		totalCost = 0;
 		itemInformation = "";
 		
+		payment = new Payment(storedCreditCards);
+		payment.readInputFile();
 		itemsOrdered = new ArrayList<MenuItem>();
 		menu = new Menu(givenMenu);
 		menu.readInputFile();
@@ -136,11 +139,7 @@ public class Driver extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				/**
-				 * private method that clears all content
-				 */
 				delete();
-				
 			}
 			
 		});
@@ -149,11 +148,7 @@ public class Driver extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				/**
-				 * We call menu read and log our order. Also display an option pane to notify.
-				 * If there is no order, then an option pane will notify a user that there is not one
-				 * 
-				 */
+
 				try {
 					if (!orderPrice.getText().equals("Total Cost = $0.00")) {
 						menu.logOrder(itemsOrdered, totalCost);
@@ -164,19 +159,13 @@ public class Driver extends JFrame {
 						JOptionPane.showMessageDialog(null,"No items ordered", "Place order", JOptionPane.ERROR_MESSAGE);
 					}
 					
-				}
-				 catch (IOException g) {
-					
+				} catch (IOException g) {
 					 JOptionPane.showMessageDialog(null, "Error! Program terminated"
 							 , " Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
 			}
-			
 		});
-		/**
-		 * Adding to the panel
-		 */
+
 		lowerPanel.add(orderPrice, BorderLayout.NORTH);
 		lowerPanel.add(placeOrder, BorderLayout.CENTER);
 		lowerPanel.add(clearOrder, BorderLayout.SOUTH);
@@ -195,10 +184,7 @@ public class Driver extends JFrame {
 		orderItems.setText(null);
 		
 	}
-	/**
-	 * Constantly updates the order panel based on commands
-	 * @param itemButton
-	 */
+
 	private void refreshPanel(final MenuItem itemButton) {
 		String item = itemButton.getName();
 		double itemPrice = itemButton.getPrice();
