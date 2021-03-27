@@ -25,3 +25,14 @@ Sweet roll   10.0
 Breakfast Bagel Sandwhich   3.5
 Total Price is: $402.5
  
+Order number1, Kraft Single   1.0
+Total Price is: $1.0
+ 
+Order number2, Kraft Single   1.0
+Hangover Happy Meal   22.0
+Total Price is: $23.0
+ 
+Order number1, Kraft Single   1.0
+An Actual Chicken   120.5
+Total Price is: $121.5
+ 

@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,20 +32,26 @@ import java.io.IOException;
 public class Driver extends JFrame {
 	private double totalCost;
 	private Menu menu;
-	private Payment payment;
+	//private Payment payment;
 	private JPanel receipt;
 	private JPanel centerPanel;
 	private JTextField orderPrice;
 	private ArrayList <MenuItem> itemsOrdered;
 	private JTextPane orderItems;
 	private String itemInformation;
+	private JLabel userLabel;
+	private JTextField userText;
+	private JLabel cardLabel;
+	private JTextField cardText;
+	private JButton button;
+	private JLabel success;
 	
 	public Driver(File storedCreditCards, File givenMenu) throws FileNotFoundException {
 		totalCost = 0;
 		itemInformation = "";
 		
-		payment = new Payment(storedCreditCards);
-		payment.readInputFile();
+		//payment = new Payment(storedCreditCards);
+		//payment.readInputFile();
 		itemsOrdered = new ArrayList<MenuItem>();
 		menu = new Menu(givenMenu);
 		menu.readInputFile();
@@ -152,7 +160,7 @@ public class Driver extends JFrame {
 				try {
 					if (!orderPrice.getText().equals("Total Cost = $0.00")) {
 						menu.logOrder(itemsOrdered, totalCost);
-						JOptionPane.showMessageDialog(getContentPane(), "Order has been sent to kitchen", "Order has been logged", JOptionPane.INFORMATION_MESSAGE);
+						payWindow();
 						delete();
 					}
 					else {
@@ -194,5 +202,57 @@ public class Driver extends JFrame {
 		totalCost += itemPrice;
 		orderPrice.setText("Total cost = $" + totalCost);
 	}
+	
+	private void payWindow() {
+        JPanel panel = new JPanel();
+        
+        JFrame frame = new JFrame();
+        frame.setSize(300, 300);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.add(panel);
+                
+        panel.setLayout(null);
+                
+        userLabel = new JLabel("Name");
+        userLabel.setBounds(10, 20, 80, 25);
+        panel.add(userLabel);
+                
+        userText = new JTextField();
+        userText.setBounds(100, 20, 165, 25);
+        panel.add(userText);
+        
+        cardLabel = new JLabel("Card Number");
+        cardLabel.setBounds(10, 50, 80, 25);
+        panel.add(cardLabel);
+        
+        cardText = new JTextField();
+        cardText.setBounds(100, 50, 165, 25);
+        panel.add(cardText);
+        
+        button = new JButton("Confirm");
+        button.setBounds(10, 80, 80, 25);
+        
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Map<String, String> stringMap = new HashMap<String, String>();    
+                
+                stringMap.put(userText.getText(), cardText.getText());
+                
+                System.out.print(stringMap.toString());
+        
+            }
+        });
+        
+        panel.add(button);
+        
+        success = new JLabel("");
+        success.setBounds(10, 110, 300, 25);
+        panel.add(success);
+                
+        frame.setVisible(true);
+        
+    }
 
 }
