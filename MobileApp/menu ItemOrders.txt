@@ -36,3 +36,57 @@ Order number1, Kraft Single   1.0
 An Actual Chicken   120.5
 Total Price is: $121.5
  
+Order number1, Kraft Single   1.0
+Total Price is: $1.0
+ 
+Order number1, Kraft Single   1.0
+Total Price is: $1.0
+ 
+Order number1, An Actual Chicken   120.5
+Total Price is: $120.5
+ 
+Order number1, Double Cheeseburger   4.5
+Chicken Fajita Pita   15.0
+Total Price is: $19.5
+ 
+Order number1, Kraft Single   1.0
+Total Price is: $1.0
+ 
+Order number1, An Actual Chicken   120.5
+Total Price is: $120.5
+ 
+Order number1, Kraft Single   1.0
+Total Price is: $1.0
+ 
+Order number1, Kraft Single   1.0
+Total Price is: $1.0
+ 
+Order number1, Hangover Happy Meal   22.0
+Kraft Single   1.0
+An Actual Chicken   120.5
+Chicken   12.5
+Carl's Jr. Bootleg   30.0
+Garden Salad   20.0
+Chicken Fajita Pita   15.0
+Hangover Happy Meal   22.0
+Total Price is: $243.0
+ 
+Order number1, Kraft Single   1.0
+Hangover Happy Meal   22.0
+Garden Salad   20.0
+Carl's Jr. Bootleg   30.0
+Total Price is: $73.0
+ 
+Order number2, Single Cheeseburger   3.5
+Large Cheese Pizza   10.5
+Garden Salad   20.0
+Carl's Jr. Bootleg   30.0
+Chicken   12.5
+Sweet roll   10.0
+Breakfast Bagel Sandwhich   3.5
+An Actual Chicken   120.5
+Kraft Single   1.0
+Hangover Happy Meal   22.0
+Chicken Fajita Pita   15.0
+Total Price is: $248.5
+ 

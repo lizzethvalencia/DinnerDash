@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 
 
 public class Payment {
-	private File cardInfo;
 	private BufferedWriter cardLogger;
 	private FileWriter cardLoggerStream;
 	private String inputFile;
@@ -28,10 +27,10 @@ public class Payment {
 	public void readInputFile() {
 		while(sc.hasNextLine()) {
 			String card = sc.nextLine();
-			tokens = new StringTokenizer(card, "=");
+			tokens = new StringTokenizer(card, ";");
 			while(tokens.hasMoreTokens()) {
-				String cardNum = tokens.nextToken();
 				String cardHolder = tokens.nextToken();
+				String cardNum = tokens.nextToken();
 				CreditCard createCard = new CreditCard(cardNum, cardHolder);
 				cards.add(createCard);
 			}
@@ -43,12 +42,12 @@ public class Payment {
 		return cards;
 	}
 	
-	public void logCreditCard(ArrayList<CreditCard> creditCardsStored) throws IOException {
+	public void logCreditCard(String cardHolder, String cardNum) throws IOException {
 		cardLoggerStream = new FileWriter(inputFile,true);
 		cardLogger = new BufferedWriter(cardLoggerStream);
 		
-		for(CreditCard card: creditCardsStored)
-			cardLogger.write(card.toString() + "\n");
+		CreditCard card = new CreditCard(cardNum, cardHolder);
+		cardLogger.write(card.toString() + "\n");
 		
 		cardLogger.close();
 	}

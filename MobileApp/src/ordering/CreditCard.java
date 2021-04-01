@@ -22,7 +22,7 @@ public class CreditCard {
 	}
 	
 	private boolean isValid(String cardNum, String cardHolder) {
-		if(cardNum.length() > 13 || cardNum.length() < 16 || cardHolder.length() == 0)
+		if(cardNum.length() < 13 || cardNum.length() > 16 || cardHolder.length() == 0)
 			return false;
 		else
 			return true;

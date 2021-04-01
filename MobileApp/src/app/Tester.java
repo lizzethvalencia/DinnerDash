@@ -9,9 +9,8 @@ public class Tester {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		try {
-			File inputFile = new File("creditCardInfo");
-			File inputFile2 = new File("menu");
-			Driver guiFrame = new Driver(inputFile, inputFile2);
+			File inputFile = new File("menu");
+			Driver guiFrame = new Driver(inputFile);
 		} catch(FileNotFoundException e) {
 			JOptionPane.showMessageDialog(null,"Error! Menu File not found!", "Please reinput", JOptionPane.ERROR_MESSAGE);
 		} catch(Exception e) {

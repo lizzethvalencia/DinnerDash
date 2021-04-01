@@ -1,6 +1,8 @@
 package app;
 import ordering.Menu;
 import ordering.MenuItem;
+import ordering.Payment;
+import ordering.CreditCard;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,8 +12,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,13 +32,13 @@ import java.io.IOException;
 public class Driver extends JFrame {
 	private double totalCost;
 	private Menu menu;
-	//private Payment payment;
 	private JPanel receipt;
 	private JPanel centerPanel;
 	private JTextField orderPrice;
 	private ArrayList <MenuItem> itemsOrdered;
 	private JTextPane orderItems;
 	private String itemInformation;
+	private int cookTime;
 	private JLabel userLabel;
 	private JTextField userText;
 	private JLabel cardLabel;
@@ -46,12 +46,10 @@ public class Driver extends JFrame {
 	private JButton button;
 	private JLabel success;
 	
-	public Driver(File storedCreditCards, File givenMenu) throws FileNotFoundException {
+	public Driver(File givenMenu) throws FileNotFoundException {
 		totalCost = 0;
 		itemInformation = "";
 		
-		//payment = new Payment(storedCreditCards);
-		//payment.readInputFile();
 		itemsOrdered = new ArrayList<MenuItem>();
 		menu = new Menu(givenMenu);
 		menu.readInputFile();
@@ -62,7 +60,6 @@ public class Driver extends JFrame {
 		setBackground(Color.WHITE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-
 	}
 	
 	public void create() {
@@ -81,7 +78,6 @@ public class Driver extends JFrame {
 		ArrayList<MenuItem> itemButtons = menu.getMenuItems();
 
 		for (final MenuItem itemButton: itemButtons) {
-
 			final JButton createButton = new JButton(itemButton.getName());
 			createButton.setToolTipText(itemButton.getName());
 			
@@ -92,19 +88,15 @@ public class Driver extends JFrame {
 			});
 			pan.add(createButton);
 			createButton.setPreferredSize(new Dimension(30,60));
-			
 		}
-
 		JScrollPane scroller = new JScrollPane(pan);
 		Border etchedBorder = BorderFactory.createEtchedBorder();
 		Border border = BorderFactory.createTitledBorder(etchedBorder, "Menu Items",TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Lucida", Font.BOLD, 20) , Color.BLACK);
 		pan.setBorder(border);
 		return scroller;
-
 		}
 
 	private JPanel getReceipt() {
-		
 		receipt = new JPanel();
 		JLabel label = new JLabel("Cart:");
 		receipt.setLayout(new BorderLayout());
@@ -149,14 +141,11 @@ public class Driver extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				delete();
 			}
-			
 		});
 		
 		placeOrder.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
 				try {
 					if (!orderPrice.getText().equals("Total Cost = $0.00")) {
 						menu.logOrder(itemsOrdered, totalCost);
@@ -180,34 +169,33 @@ public class Driver extends JFrame {
 		lowerPanel.setBackground(Color.LIGHT_GRAY);
 		receipt.setBackground(Color.WHITE);
 		return receipt;
-		
 	}
 	
 	private void delete() {
-		
 		orderPrice.setText("Total Cost = $0.00");
 		totalCost = 0;
 		itemsOrdered.clear();
 		itemInformation = "";
 		orderItems.setText(null);
-		
 	}
 
 	private void refreshPanel(final MenuItem itemButton) {
 		String item = itemButton.getName();
 		double itemPrice = itemButton.getPrice();
+		int itemCookTime = itemButton.getCookTime();
 		itemInformation += "\n" + item + "\n" + itemPrice + "\n";
 		orderItems.setText(itemInformation);
 		itemsOrdered.add(itemButton);
 		totalCost += itemPrice;
 		orderPrice.setText("Total cost = $" + totalCost);
+		cookTime += itemCookTime;
 	}
 	
 	private void payWindow() {
         JPanel panel = new JPanel();
-        
         JFrame frame = new JFrame();
-        frame.setSize(300, 300);
+        
+        frame.setSize(300, 200);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.add(panel);
@@ -233,18 +221,6 @@ public class Driver extends JFrame {
         button = new JButton("Confirm");
         button.setBounds(10, 80, 80, 25);
         
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Map<String, String> stringMap = new HashMap<String, String>();    
-                
-                stringMap.put(userText.getText(), cardText.getText());
-                
-                System.out.print(stringMap.toString());
-        
-            }
-        });
-        
         panel.add(button);
         
         success = new JLabel("");
@@ -253,6 +229,25 @@ public class Driver extends JFrame {
                 
         frame.setVisible(true);
         
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	boolean flag = false;
+            	
+            	while(flag) {
+            		try {
+            			CreditCard userCard = new CreditCard(cardText.getText(), userText.getText());
+            			flag = true;
+            		} catch (IllegalArgumentException g) {
+            			success.setText("Invalid Card Number");
+            		}
+            	}
+            	
+            	frame.dispose();
+            	
+            	JFrame cookTimeFrame = new JFrame();
+            	JOptionPane.showMessageDialog(cookTimeFrame, "Your food will be ready in: " + cookTime + " minutes!");
+            }
+        });
     }
-
 }
